@@ -1,0 +1,18 @@
+Falsifies `file_system_contract::proofs::the_attribute_list_walk_ends`.
+
+The defect: `extended_attribute::list::iter` advances by the name alone and skips the length byte, so records overlap.
+
+Expected to fail: `assert!(consumed <= length)`, and the unwinding assertion of the walk's loop.
+
+diff --git a/src/extended_attribute.rs b/src/extended_attribute.rs
+--- a/src/extended_attribute.rs
++++ b/src/extended_attribute.rs
+@@ -204,7 +204,7 @@
+                 return None;
+             }
+             let name = self.buf.get(self.at + 1..self.at + 1 + len)?;
+-            self.at += record_len(len);
++            self.at += len;
+             Some(name)
+         }
+     }

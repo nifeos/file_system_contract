@@ -1,0 +1,5 @@
+# A virtual workspace over two crates: the filesystem stack's wire protocols, which may be
+# published, and the test data both sides of those protocols read, which never is.
+[workspace]
+resolver = "3"
+members = ["file_system_contract", "file_system_fixture"]

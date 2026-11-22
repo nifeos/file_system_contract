@@ -1,0 +1,20 @@
+Falsifies `file_system_contract::proofs::a_file_request_round_trips`.
+
+The defect: `file_system::request` shifts the handle one bit too far, so the handle bleeds out of its field.
+
+Expected to fail: `assert!(file_system::request_handle(w0) == handle)`, for any non-zero handle.
+
+Re-cut 2026-11-22 (UTC) when the packer's masks gave way to an assertion; the changed line is the same shift and wants a replay.
+
+diff --git a/src/file_system.rs b/src/file_system.rs
+--- a/src/file_system.rs
++++ b/src/file_system.rs
+@@ -413,7 +413,7 @@
+ /// ```
+ pub const fn request(operation: u64, handle: u64, len: u64) -> u64 {
+     assert!(handle <= MAXIMUM_HANDLE && len <= MAXIMUM_LENGTH_BYTES);
+-    (operation << super::OPERATION_SHIFT) | (handle << 40) | len
++    (operation << super::OPERATION_SHIFT) | (handle << 41) | len
+ }
+ /// The handle of a file request word.
+ pub const fn request_handle(w0: u64) -> u64 {

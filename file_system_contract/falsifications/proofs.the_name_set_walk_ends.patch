@@ -1,0 +1,18 @@
+Falsifies `file_system_contract::proofs::the_name_set_walk_ends`.
+
+The defect: `nameset::iter` never drops the record it read, so the walk yields the first name again until the cap stops it.
+
+Expected to fail: the unwinding assertion of the walk's loop.
+
+diff --git a/src/nameset.rs b/src/nameset.rs
+--- a/src/nameset.rs
++++ b/src/nameset.rs
+@@ -103,7 +103,7 @@
+         }
+         let (&flags, rest) = rest.split_first()?;
+         let (name, rest) = rest.split_at_checked(len as usize)?;
+-        self.buf = rest;
++        let _ = rest;
+         Some((name, flags & IS_DIRECTORY != 0))
+     }
+ }

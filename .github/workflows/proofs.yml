@@ -1,0 +1,18 @@
+name: proofs
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, ready_for_review]
+  # The push on main is what the release gate reads.
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  proofs-file_system_contract:
+    uses: nifeos/crate-workflows/.github/workflows/proofs.yml@7686d5bf752584f87ce96b46017ede92ed6ba10d
+    with:
+      manifest-path: file_system_contract/Cargo.toml
+  proofs-file_system_fixture:
+    uses: nifeos/crate-workflows/.github/workflows/proofs.yml@7686d5bf752584f87ce96b46017ede92ed6ba10d
+    with:
+      manifest-path: file_system_fixture/Cargo.toml

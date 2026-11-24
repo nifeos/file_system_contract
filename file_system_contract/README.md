@@ -1,9 +1,9 @@
 # file_system_contract
 
-[![check](https://github.com/nifeos/file_system_contract/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/nifeos/file_system_contract/actions/workflows/ci.yml?query=branch%3Amain)
-[![proofs](https://github.com/nifeos/file_system_contract/actions/workflows/proofs.yml/badge.svg?branch=main)](https://github.com/nifeos/file_system_contract/actions/workflows/proofs.yml?query=branch%3Amain)
-[![license](https://img.shields.io/badge/license-MIT%20OR%20Apache--2.0-blue.svg)](https://github.com/nifeos/file_system_contract#license)
-[![minimum Rust version](https://img.shields.io/badge/rust-1.88%2B-blue.svg)](https://github.com/nifeos/file_system_contract/blob/main/file_system_contract/Cargo.toml)
+[![check](https://github.com/partsfoundry/file_system_contract/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/partsfoundry/file_system_contract/actions/workflows/ci.yml?query=branch%3Amain)
+[![proofs](https://github.com/partsfoundry/file_system_contract/actions/workflows/proofs.yml/badge.svg?branch=main)](https://github.com/partsfoundry/file_system_contract/actions/workflows/proofs.yml?query=branch%3Amain)
+[![license](https://img.shields.io/badge/license-MIT%20OR%20Apache--2.0-blue.svg)](https://github.com/partsfoundry/file_system_contract#license)
+[![minimum Rust version](https://img.shields.io/badge/rust-1.88%2B-blue.svg)](https://github.com/partsfoundry/file_system_contract/blob/main/file_system_contract/Cargo.toml)
 
 The wire protocols of a filesystem stack, as code: the block protocol between a filesystem server
 and a block server, and the file protocol between a client and the filesystem server. The crate is

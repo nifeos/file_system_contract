@@ -1,0 +1,54 @@
+# The cargo-fuzz targets, in a workspace of their own so that `cargo build` and `cargo test` at the
+# repository root never build them. They need nightly: `cargo +nightly fuzz run <target>`.
+
+[package]
+name = "file_system_contract-fuzz"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[package.metadata]
+cargo-fuzz = true
+
+[dependencies]
+libfuzzer-sys = "0.4"
+
+[dependencies.file_system_contract]
+path = ".."
+
+[[bin]]
+name = "directory_entry_walk"
+path = "fuzz_targets/directory_entry_walk.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "name_set_walk"
+path = "fuzz_targets/name_set_walk.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "attribute_list_walk"
+path = "fuzz_targets/attribute_list_walk.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "attribute_store_walk"
+path = "fuzz_targets/attribute_store_walk.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "attribute_store_edit"
+path = "fuzz_targets/attribute_store_edit.rs"
+test = false
+doc = false
+bench = false
+
+[workspace]

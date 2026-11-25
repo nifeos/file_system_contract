@@ -117,6 +117,21 @@ git checkout -- src
 The patch swaps the bitwise AND in `attenuate` for an OR, so the failing run reports the
 `attenuate_never_widens` check as failed and ends with `VERIFICATION:- FAILED`.
 
+### Fuzzing
+
+`fuzz/` holds five cargo-fuzz targets in a workspace of their own, so `cargo test` never builds
+them. `directory_entry_walk`, `name_set_walk` and `attribute_list_walk` walk an arbitrary reply,
+encode what the walk read and walk the result again. `attribute_store_walk` walks, lists and
+rebuilds an arbitrary attribute blob, and `attribute_store_edit` applies one `set` or `remove` to one
+and checks every record it leaves. They need nightly and cargo-fuzz:
+
+```sh
+cargo install --locked cargo-fuzz --version 0.13.2
+cargo +nightly fuzz run attribute_store_edit fuzz/corpus/attribute_store_edit fuzz/seeds/attribute_store_edit
+```
+
+The weekly fuzz job runs every target for a bounded time from its seeds in `fuzz/seeds/`.
+
 ## BUGS
 
 - `GET_VOLUME_STATISTICS` answers about the whole image, never a subtree. Its free count is a forecast, not a

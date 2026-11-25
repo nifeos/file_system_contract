@@ -1,9 +1,9 @@
 # file_system_fixture
 
-[![check](https://github.com/nifeos/file_system_contract/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/nifeos/file_system_contract/actions/workflows/ci.yml?query=branch%3Amain)
-[![proofs](https://github.com/nifeos/file_system_contract/actions/workflows/proofs.yml/badge.svg?branch=main)](https://github.com/nifeos/file_system_contract/actions/workflows/proofs.yml?query=branch%3Amain)
-[![license](https://img.shields.io/badge/license-MIT%20OR%20Apache--2.0-blue.svg)](https://github.com/nifeos/file_system_contract#license)
-[![minimum Rust version](https://img.shields.io/badge/rust-1.88%2B-blue.svg)](https://github.com/nifeos/file_system_contract/blob/main/file_system_fixture/Cargo.toml)
+[![check](https://github.com/partsfoundry/file_system_contract/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/partsfoundry/file_system_contract/actions/workflows/ci.yml?query=branch%3Amain)
+[![proofs](https://github.com/partsfoundry/file_system_contract/actions/workflows/proofs.yml/badge.svg?branch=main)](https://github.com/partsfoundry/file_system_contract/actions/workflows/proofs.yml?query=branch%3Amain)
+[![license](https://img.shields.io/badge/license-MIT%20OR%20Apache--2.0-blue.svg)](https://github.com/partsfoundry/file_system_contract#license)
+[![minimum Rust version](https://img.shields.io/badge/rust-1.88%2B-blue.svg)](https://github.com/partsfoundry/file_system_contract/blob/main/file_system_fixture/Cargo.toml)
 
 Test data for a filesystem stack, kept in one place so the programs that touch it agree. It holds
 the names and contents of the files a test image ships, the verdict words of the witnesses that

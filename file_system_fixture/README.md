@@ -42,14 +42,19 @@ staged glob names against a glob matcher live with the matcher.
 - Image contents: `MOTD_NAME` and `MOTD`, `SCRATCH_NAME` and `SCRATCH_PLACEHOLDER`, `WRITE_PATTERN`, and
   the `tree`, `walk`, `blank` and `crash` modules, which name the directories and files a test
   image carries and the disk each test starts from.
-- Verdict words and bitmaps: `SUCCESS`, `VERDICT` and the witnesses `escape`, `dirscape`, `twodir`,
-  `twotrees`, `navscape`, `globscape`, `attrs` and the shared-frame report words. A
+- Verdict words and bitmaps: `SUCCESS`, `VERDICT` and the witnesses `escape`, `directory_escape`,
+  `endpoint_boundary`, `mounted_tree`, `navigation`, `globbing`, `attributes` and the shared-frame
+  report words. A
   witness reports a bitmap and the test asserts an exact set, so a witness that reached nothing and
   one that reached everything both fail. Each bit is a single bit and no two share one.
 - Benchmarks: `throughput` fixes the transfer unit (`file_system_contract::file_system::MAXIMUM_TRANSFER_BYTES`),
   the bytes per phase and the phase tags, and `walk` fixes the tree a walk measures.
 - Names ride in grants, so every file and directory name here fits `file_system_contract::grant::fits`;
   the crate's tests check that against the contract, and check the witnesses' bits for overlap.
+
+The doc comments say what each item is and what reads it. The reasons behind the values are in
+[docs/witnesses.md](docs/witnesses.md), [docs/benchmarks.md](docs/benchmarks.md) and
+[docs/image.md](docs/image.md).
 
 ## Building and testing
 

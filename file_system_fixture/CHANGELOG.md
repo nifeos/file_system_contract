@@ -6,6 +6,8 @@ sentence beside it.
 ## Unreleased
 
 - First version.
+- The `image` module and `examples/host_directory.rs`: a plan of the test image that a harness
+  can stage through any filesystem, and a verifier that reads it back.
 
 ## BUGS
 

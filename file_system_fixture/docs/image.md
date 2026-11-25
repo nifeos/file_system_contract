@@ -1,7 +1,8 @@
 # Why the test image has the layout it has
 
 This page holds the reasons behind the files and directories the test image carries, and behind
-the two disks that are not the shared image. The doc comments in `src/lib.rs` say what each
+the two disks that are not the shared image. `image::for_each` visits the shared image entry by
+entry, and `image::verify` checks a staged copy. The doc comments in `src/lib.rs` say what each
 constant is and what reads it.
 
 ## The root

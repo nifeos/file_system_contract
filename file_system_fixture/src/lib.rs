@@ -10,10 +10,11 @@
 //!
 //! - The dependency on `file_system_contract` is a path inside this repository's workspace, so this
 //!   crate builds only beside it.
-//! - Much of the crate describes the QEMU test runs of the stack it was written for (the witnesses, the benchmark phases), not
-//!   a filesystem in general. A third party gets the file names and the shapes as examples.
-//! - It ships no harness. The programs that drive the witnesses and the benchmarks live with that
-//!   stack, so a third party gets the vocabulary and nothing to run against it.
+//! - Much of the crate describes the QEMU test runs of the stack it was written for (the
+//!   witnesses, the benchmark phases), not a filesystem in general. A third party gets the file names and the shapes as examples.
+//! - The harness in [`image`] stages and verifies the image, and nothing more. The programs that
+//!   drive the witnesses and the benchmarks live with that stack.
+//! - [`image::verify`] checks names and bytes, not permissions or timestamps.
 
 #![no_std]
 
@@ -936,6 +937,8 @@ pub mod blank {
     /// What [`MADE_NAME`] holds, checked byte for byte on the host after the run.
     pub const MADE_BODY: &[u8] = b"CRK57: this filesystem was created on the target\n";
 }
+
+pub mod image;
 
 #[cfg(test)]
 mod tests;

@@ -47,6 +47,9 @@ staged glob names against a glob matcher live with the matcher.
   report words. A
   witness reports a bitmap and the test asserts an exact set, so a witness that reached nothing and
   one that reached everything both fail. Each bit is a single bit and no two share one.
+- A harness: `image::for_each` visits every directory and file the test image holds, parents
+  first, so a harness can stage the image through any filesystem. `image::verify` reads a
+  staged image back through a small `Reader` trait and names the first entry that differs.
 - Benchmarks: `throughput` fixes the transfer unit (`file_system_contract::file_system::MAXIMUM_TRANSFER_BYTES`),
   the bytes per phase and the phase tags, and `walk` fixes the tree a walk measures.
 - Names ride in grants, so every file and directory name here fits `file_system_contract::grant::fits`;
@@ -55,6 +58,19 @@ staged glob names against a glob matcher live with the matcher.
 The doc comments say what each item is and what reads it. The reasons behind the values are in
 [docs/witnesses.md](docs/witnesses.md), [docs/benchmarks.md](docs/benchmarks.md) and
 [docs/image.md](docs/image.md).
+
+## Running the harness
+
+`examples/host_directory.rs` stages the image into a host directory with `std::fs` and verifies it.
+Point `verify` at a filesystem under test, mounted where the host can read it, to check an image
+that filesystem staged or that a host tool wrote for it.
+
+```sh
+cargo run --example host_directory -- stage /tmp/image    # writes the image, then verifies it
+cargo run --example host_directory -- verify /mnt/test    # only reads
+```
+
+`tests/host_directory.rs` runs the same two steps against a temporary directory under `cargo test`.
 
 ## Building and testing
 
@@ -68,8 +84,11 @@ cargo build --lib --target x86_64-unknown-none   # also aarch64-unknown-none-sof
 - `file_system_contract` is a path dependency inside this repository's workspace, so this crate builds only beside it.
 - Much of the crate describes the QEMU test runs of its first stack (the witnesses, the
   benchmark phases), not a filesystem in general. A third party gets the file names and the shapes as examples.
-- It ships no harness. The programs that drive the witnesses and the benchmarks live with that
-  stack, so a third party gets the vocabulary and nothing to run against it.
+- The harness stages and verifies the image, and nothing more. The programs that drive the
+  witnesses and the benchmarks against a staged image live with that stack, so a third party can
+  check that its filesystem holds the image but must write its own witnesses.
+- `image::verify` checks names and bytes, not permissions or timestamps, and lets the root hold
+  names the plan does not.
 
 ## Minimum Rust version
 

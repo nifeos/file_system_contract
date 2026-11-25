@@ -376,3 +376,198 @@ fn the_attribute_witness_expectation_matches_its_bits() {
         "a default kind would hide a layer that dropped it",
     );
 }
+
+// --- The image plan and its verifier ---
+
+/// An in-memory filesystem the plan stages into: each path maps to `None` for a directory or the
+/// file's bytes.
+#[derive(Default)]
+struct Model(std::collections::BTreeMap<Vec<Vec<u8>>, Option<Vec<u8>>>);
+
+fn owned(path: &[&[u8]]) -> Vec<Vec<u8>> {
+    path.iter().map(|name| name.to_vec()).collect()
+}
+
+impl Model {
+    fn staged() -> Model {
+        use crate::image::{self, Kind};
+        let mut model = Model::default();
+        image::for_each(|entry| -> Result<(), ()> {
+            let contents = match entry.kind {
+                Kind::Directory => None,
+                Kind::File(body) => {
+                    let mut bytes = std::vec![0; body.len()];
+                    assert_eq!(body.fill(0, &mut bytes), body.len());
+                    Some(bytes)
+                }
+            };
+            let parent = &entry.path[..entry.path.len() - 1];
+            assert!(parent.is_empty() || model.0.get(&owned(parent)) == Some(&None));
+            assert!(
+                model.0.insert(owned(entry.path), contents).is_none(),
+                "staged twice"
+            );
+            Ok(())
+        })
+        .unwrap();
+        model
+    }
+}
+
+impl crate::image::Reader for Model {
+    type Error = &'static str;
+
+    fn list(&mut self, path: &[&[u8]], name: &mut dyn FnMut(&[u8])) -> Result<(), Self::Error> {
+        let parent = owned(path);
+        for key in self.0.keys() {
+            if key.len() == parent.len() + 1 && key[..parent.len()] == parent[..] {
+                name(&key[parent.len()]);
+            }
+        }
+        Ok(())
+    }
+
+    fn read(
+        &mut self,
+        path: &[&[u8]],
+        offset: usize,
+        buf: &mut [u8],
+    ) -> Result<usize, Self::Error> {
+        let Some(Some(bytes)) = self.0.get(&owned(path)) else {
+            return Err("not a file");
+        };
+        let rest = bytes.get(offset..).unwrap_or(&[]);
+        let n = rest.len().min(buf.len());
+        buf[..n].copy_from_slice(&rest[..n]);
+        Ok(n)
+    }
+}
+
+fn index_of(path: &[&str]) -> usize {
+    let wanted: Vec<&[u8]> = path.iter().map(|name| name.as_bytes()).collect();
+    crate::image::for_each(|entry| {
+        if entry.path == &wanted[..] {
+            Err(entry.index)
+        } else {
+            Ok(())
+        }
+    })
+    .unwrap_err()
+}
+
+/// **A faithful staging verifies, and the plan visits [`image::ENTRIES`](crate::image::ENTRIES)
+/// entries.** The model refuses a child staged before its parent and a path staged twice.
+#[test]
+fn the_staged_plan_verifies() {
+    let mut model = Model::staged();
+    assert_eq!(model.0.len(), crate::image::ENTRIES);
+    assert_eq!(crate::image::verify(&mut model), Ok(()));
+}
+
+/// The root may hold names the plan does not, since other tests write there; any other directory
+/// may not.
+#[test]
+fn the_root_tolerates_strangers_and_subdirectories_do_not() {
+    use crate::image::{Mismatch, verify};
+    let mut model = Model::staged();
+    model.0.insert(std::vec![b"lost+found".to_vec()], None);
+    assert_eq!(verify(&mut model), Ok(()));
+    model.0.insert(
+        std::vec![b"sub".to_vec(), b"stranger".to_vec()],
+        Some(Vec::new()),
+    );
+    assert_eq!(
+        verify(&mut model),
+        Err(Mismatch::Unexpected {
+            directory: index_of(&["sub"])
+        })
+    );
+}
+
+/// Each way a file can be wrong names the file and, where it has one, the offset.
+#[test]
+fn a_damaged_file_names_itself() {
+    use crate::image::{Mismatch, verify};
+    let s64k = std::vec![b"walk".to_vec(), b"sizes".to_vec(), b"s64k".to_vec()];
+    let entry = index_of(&["walk", "sizes", "s64k"]);
+    let damage = |f: &dyn Fn(&mut Vec<u8>)| {
+        let mut model = Model::staged();
+        f(model.0.get_mut(&s64k).unwrap().as_mut().unwrap());
+        verify(&mut model)
+    };
+    assert_eq!(
+        damage(&|b| b[5000] ^= 1),
+        Err(Mismatch::Differs {
+            entry,
+            offset: 5000
+        })
+    );
+    assert_eq!(
+        damage(&|b| b.truncate(4097)),
+        Err(Mismatch::Short {
+            entry,
+            length_bytes: 4097
+        })
+    );
+    assert_eq!(damage(&|b| b.push(b'x')), Err(Mismatch::Long { entry }));
+
+    let mut model = Model::staged();
+    model
+        .0
+        .remove(&std::vec![b"rmtree".to_vec(), b"rm-solo".to_vec()]);
+    assert_eq!(
+        verify(&mut model),
+        Err(Mismatch::Missing {
+            entry: index_of(&["rmtree", "rm-solo"])
+        })
+    );
+}
+
+/// **The plan's walk tree has the totals the `walk` constants state**, which were computed from
+/// the shape and not from a walk: entries below the walk root, files, bytes and components.
+#[test]
+fn the_plan_walk_tree_matches_the_walk_totals() {
+    use crate::image::{Kind, for_each};
+    use crate::walk;
+    let (mut entries, mut files, mut bytes, mut components) = (0, 0, 0, 0);
+    for_each(|entry| -> Result<(), ()> {
+        if entry.path[0] == walk::ROOT.as_bytes() && entry.path.len() > 1 {
+            entries += 1;
+            components += entry.path.len() - 1;
+            if let Kind::File(body) = entry.kind {
+                files += 1;
+                bytes += body.len();
+            }
+        }
+        Ok(())
+    })
+    .unwrap();
+    assert_eq!(entries, walk::WALK_ENTRIES);
+    assert_eq!(files, walk::WALK_FILES);
+    assert_eq!(bytes, walk::WALK_BYTES);
+    assert_eq!(components, walk::WALK_COMPONENTS);
+}
+
+/// Every name [`tree::ROOT_ENTRIES`](crate::tree::ROOT_ENTRIES) says the root must keep is one the
+/// plan puts there, and every name in the plan fits a grant.
+#[test]
+fn the_plan_holds_the_root_entries_and_every_name_fits() {
+    use crate::image::for_each;
+    let mut root = Vec::new();
+    for_each(|entry| -> Result<(), ()> {
+        assert!(file_system_contract::grant::fits(
+            entry.path[entry.path.len() - 1]
+        ));
+        if entry.path.len() == 1 {
+            root.push(entry.path[0].to_vec());
+        }
+        Ok(())
+    })
+    .unwrap();
+    for name in crate::tree::ROOT_ENTRIES {
+        assert!(
+            root.contains(&name.as_bytes().to_vec()),
+            "{name} is not staged at the root"
+        );
+    }
+}

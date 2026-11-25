@@ -7,13 +7,13 @@ permissions:
   contents: read
 jobs:
   fuzz-file_system_contract:
-    uses: nifeos/crate-workflows/.github/workflows/fuzz.yml@11d6d6bbf760462fa1e45275d34b55b88dcde44a
+    uses: partsfoundry/crate-workflows/.github/workflows/fuzz.yml@11d6d6bbf760462fa1e45275d34b55b88dcde44a
     with:
       manifest-path: file_system_contract/Cargo.toml
       # Crash inputs are public. Set true only for a crate with no unsafe code.
       public-crash-inputs: false
   fuzz-file_system_fixture:
-    uses: nifeos/crate-workflows/.github/workflows/fuzz.yml@11d6d6bbf760462fa1e45275d34b55b88dcde44a
+    uses: partsfoundry/crate-workflows/.github/workflows/fuzz.yml@11d6d6bbf760462fa1e45275d34b55b88dcde44a
     with:
       manifest-path: file_system_fixture/Cargo.toml
       public-crash-inputs: false

@@ -7,13 +7,13 @@ permissions:
   contents: read
 jobs:
   weekly-file_system_contract:
-    uses: nifeos/crate-workflows/.github/workflows/weekly.yml@11d6d6bbf760462fa1e45275d34b55b88dcde44a
+    uses: partsfoundry/crate-workflows/.github/workflows/weekly.yml@11d6d6bbf760462fa1e45275d34b55b88dcde44a
     with:
       manifest-path: file_system_contract/Cargo.toml
     secrets:
       SETTINGS_TOKEN: ${{ secrets.SETTINGS_TOKEN }}
   weekly-file_system_fixture:
-    uses: nifeos/crate-workflows/.github/workflows/weekly.yml@11d6d6bbf760462fa1e45275d34b55b88dcde44a
+    uses: partsfoundry/crate-workflows/.github/workflows/weekly.yml@11d6d6bbf760462fa1e45275d34b55b88dcde44a
     with:
       manifest-path: file_system_fixture/Cargo.toml
       # The settings drift is the repository's, and the first call reads it. The stranger cadence

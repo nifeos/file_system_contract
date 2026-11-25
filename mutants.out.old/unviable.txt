@@ -1,7 +1,0 @@
-file_system_fixture/src/lib.rs:442:47: replace + with -
-file_system_fixture/src/image.rs:71:62: replace + with -
-file_system_fixture/src/image.rs:95:5: replace file -> Kind with Default::default()
-file_system_fixture/src/image.rs:165:33: replace + with - in walk_tree
-file_system_fixture/src/image.rs:165:33: replace + with * in walk_tree
-file_system_fixture/src/image.rs:165:52: replace + with - in walk_tree
-file_system_fixture/src/image.rs:165:52: replace + with * in walk_tree

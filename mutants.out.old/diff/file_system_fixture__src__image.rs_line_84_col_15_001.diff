@@ -1,0 +1,21 @@
+--- file_system_fixture/src/image.rs
++++ replace += with *= in for_each
+@@ -76,17 +76,17 @@
+ const _: () = assert!(walk::WIDE_FILES <= DIRECTORY_SLOTS);
+ 
+ /// Visits every directory and file on the image, each parent before anything inside it, and stops
+ /// at the first error `visit` returns. The root itself is not an entry.
+ pub fn for_each<E>(mut visit: impl FnMut(&Entry<'_>) -> Result<(), E>) -> Result<(), E> {
+     let mut index = 0;
+     let mut put = |path: &[&[u8]], kind: Kind| {
+         let entry = Entry { index, path, kind };
+-        index += 1;
++        index *= /* ~ changed by cargo-mutants ~ */ 1;
+         visit(&entry)
+     };
+     root_files(&mut put)?;
+     shell_trees(&mut put)?;
+     walk_tree(&mut put)
+ }
+ 
+ const DIRECTORY: Kind = Kind::Directory;

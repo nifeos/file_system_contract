@@ -1,0 +1,21 @@
+--- file_system_fixture/src/image.rs
++++ replace file -> Kind with Default::default()
+@@ -87,17 +87,17 @@
+     root_files(&mut put)?;
+     shell_trees(&mut put)?;
+     walk_tree(&mut put)
+ }
+ 
+ const DIRECTORY: Kind = Kind::Directory;
+ 
+ const fn file(bytes: &'static [u8]) -> Kind {
+-    Kind::File(Body::Bytes(bytes))
++    Default::default() /* ~ changed by cargo-mutants ~ */
+ }
+ 
+ fn root_files<E>(put: &mut impl FnMut(&[&[u8]], Kind) -> Result<(), E>) -> Result<(), E> {
+     use crate::*;
+     put(&[MOTD_NAME.as_bytes()], file(MOTD))?;
+     put(&[SCRATCH_NAME.as_bytes()], file(SCRATCH_PLACEHOLDER))?;
+     put(&[SHARED_VICTIM_NAME.as_bytes()], file(SHARED_VICTIM_BODY))?;
+     put(&[SHARED_USURPER_NAME.as_bytes()], file(SHARED_USURPER_BODY))

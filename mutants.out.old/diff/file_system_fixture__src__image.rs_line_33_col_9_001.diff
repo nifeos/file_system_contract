@@ -1,0 +1,24 @@
+--- file_system_fixture/src/image.rs
++++ replace Body::byte -> u8 with 1
+@@ -25,20 +25,17 @@
+ 
+     /// Whether the file is empty. No file on the image is.
+     pub const fn is_empty(&self) -> bool {
+         self.len() == 0
+     }
+ 
+     /// The byte at offset `i`, which is below [`len`](Body::len).
+     pub const fn byte(&self, i: usize) -> u8 {
+-        match self {
+-            Body::Bytes(bytes) => bytes[i],
+-            Body::Sized(_) => walk::sized_byte(i),
+-        }
++        1 /* ~ changed by cargo-mutants ~ */
+     }
+ 
+     /// Copies the bytes from `offset` on into `buf` and returns how many it copied, 0 at the end.
+     pub fn fill(&self, offset: usize, buf: &mut [u8]) -> usize {
+         let n = buf.len().min(self.len().saturating_sub(offset));
+         for (k, slot) in buf[..n].iter_mut().enumerate() {
+             *slot = self.byte(offset + k);
+         }

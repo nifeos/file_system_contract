@@ -1,0 +1,195 @@
+
+*** file_system_fixture/src/lib.rs:442:47: replace + with -
+
+*** mutation diff:
+--- file_system_fixture/src/lib.rs
++++ replace + with -
+@@ -434,17 +434,17 @@
+             b'0' + (i / 10 % 10) as u8,
+             b'0' + (i % 10) as u8,
+         ]
+     }
+ 
+     /// Directories a full walk from [`ROOT`] lists: the four regions and the chain's levels.
+     pub const WALK_DIRECTORIES: usize = 4 + DEPTH;
+     /// Files a full walk opens.
+-    pub const WALK_FILES: usize = (DEPTH + 1) + WIDE_FILES + 1 + BYTE_REGION_FILES.len();
++    pub const WALK_FILES: usize = (DEPTH + 1) - /* ~ changed by cargo-mutants ~ */ WIDE_FILES + 1 + BYTE_REGION_FILES.len();
+     /// Entries `read_dir` hands a full walk, each directory and file once. The priced program
+     /// asserts it.
+     pub const WALK_ENTRIES: usize = WALK_DIRECTORIES + WALK_FILES;
+     /// Bytes a full walk reads.
+     pub const WALK_BYTES: usize = {
+         let mut sized = 0;
+         let mut i = 0;
+         while i < BYTE_REGION_FILES.len() {
+
+
+*** /home/calef/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/cargo test --no-run --verbose --package=file_system_fixture@0.1.0
+warning: `package.homepage` is redundant with `package.repository`
+  --> file_system_contract/Cargo.toml:11:12
+   |
+ 9 | repository = "https://github.com/partsfoundry/file_system_contract"
+   |              ------------------------------------------------------
+10 | documentation = "https://github.com/partsfoundry/file_system_contract"
+11 | homepage = "https://github.com/partsfoundry/file_system_contract"
+   |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: `cargo::redundant_homepage` is set to `warn` by default
+help: consider removing `package.homepage`
+warning: `file_system_contract` (manifest) generated 1 warning
+       Fresh file_system_contract v0.1.0 (/home/calef/.cache/tmp/cargo-mutants-file-system-follow-ups-LeIl6a.tmp/file_system_contract)
+       Dirty file_system_fixture v0.1.0 (/home/calef/.cache/tmp/cargo-mutants-file-system-follow-ups-LeIl6a.tmp/file_system_fixture): the file `file_system_fixture/src/lib.rs` has changed (1795573164.413573020s, 1s after last build at 1795573163.781567315s)
+   Compiling file_system_fixture v0.1.0 (/home/calef/.cache/tmp/cargo-mutants-file-system-follow-ups-LeIl6a.tmp/file_system_fixture)
+     Running `/home/calef/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc --crate-name file_system_fixture --edition=2024 file_system_fixture/src/lib.rs --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat,unused-externs-silent --emit=dep-info,link -C embed-bitcode=no -C debuginfo=2 --warn=unsafe_op_in_unsafe_fn --warn=unexpected_cfgs '--warn=clippy::undocumented_unsafe_blocks' '--warn=clippy::semicolon_if_nothing_returned' '--warn=clippy::ptr_as_ptr' --warn=missing_docs '--warn=clippy::manual_let_else' '--warn=clippy::doc_markdown' '--warn=clippy::cast_ptr_alignment' --check-cfg 'cfg(kani)' --test --check-cfg 'cfg(docsrs,test)' --check-cfg 'cfg(feature, values())' -C metadata=3c58a47500fa006a -C extra-filename=-6ad9ae2abd04a2ad --out-dir /home/calef/.cache/tmp/cargo-mutants-file-system-follow-ups-LeIl6a.tmp/target/debug/build/file_system_fixture/6ad9ae2abd04a2ad/out -C incremental=/home/calef/.cache/tmp/cargo-mutants-file-system-follow-ups-LeIl6a.tmp/target/debug/incremental --extern file_system_contract=/home/calef/.cache/tmp/cargo-mutants-file-system-follow-ups-LeIl6a.tmp/target/debug/build/file_system_contract/4a227a4c61db8a2c/out/libfile_system_contract-4a227a4c61db8a2c.rlib --force-warn=unused_crate_dependencies`
+     Running `/home/calef/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc --crate-name file_system_fixture --edition=2024 file_system_fixture/src/lib.rs --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat,unused-externs-silent --crate-type lib --emit=dep-info,metadata,link -C embed-bitcode=no -C debuginfo=2 --warn=unsafe_op_in_unsafe_fn --warn=unexpected_cfgs '--warn=clippy::undocumented_unsafe_blocks' '--warn=clippy::semicolon_if_nothing_returned' '--warn=clippy::ptr_as_ptr' --warn=missing_docs '--warn=clippy::manual_let_else' '--warn=clippy::doc_markdown' '--warn=clippy::cast_ptr_alignment' --check-cfg 'cfg(kani)' --check-cfg 'cfg(docsrs,test)' --check-cfg 'cfg(feature, values())' -C metadata=9c301d62bf5e2d3d -C extra-filename=-9cc789de75d6a672 --out-dir /home/calef/.cache/tmp/cargo-mutants-file-system-follow-ups-LeIl6a.tmp/target/debug/build/file_system_fixture/9cc789de75d6a672/out -C incremental=/home/calef/.cache/tmp/cargo-mutants-file-system-follow-ups-LeIl6a.tmp/target/debug/incremental --extern file_system_contract=/home/calef/.cache/tmp/cargo-mutants-file-system-follow-ups-LeIl6a.tmp/target/debug/build/file_system_contract/4a227a4c61db8a2c/out/libfile_system_contract-4a227a4c61db8a2c.rmeta --force-warn=unused_crate_dependencies`
+error[E0080]: attempt to compute `9_usize - 128_usize`, which would overflow
+   --> file_system_fixture/src/lib.rs:442:35
+    |
+442 |     pub const WALK_FILES: usize = (DEPTH + 1) - /* ~ changed by cargo-mutants ~ */ WIDE_FILES + 1 + BYTE_REGION_FILES.len();
+    |                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ evaluation of `walk::WALK_FILES` failed here
+
+note: erroneous constant encountered
+   --> file_system_fixture/src/lib.rs:445:56
+    |
+445 |     pub const WALK_ENTRIES: usize = WALK_DIRECTORIES + WALK_FILES;
+    |                                                        ^^^^^^^^^^
+
+note: erroneous constant encountered
+   --> file_system_fixture/src/lib.rs:454:10
+    |
+454 |         (WALK_FILES - BYTE_REGION_FILES.len()) * SMALL_BODY.len() + sized
+    |          ^^^^^^^^^^
+
+note: erroneous constant encountered
+   --> file_system_fixture/src/lib.rs:478:35
+    |
+478 |     pub const RG_MATCHES: usize = WALK_FILES - BYTE_REGION_FILES.len();
+    |                                   ^^^^^^^^^^
+
+note: erroneous constant encountered
+  --> file_system_fixture/src/image.rs:71:64
+   |
+71 |     4 + 4 + 2 + 3 + 8 + 6 + (tree::MANY_NAMES.len() + 2) + 1 + walk::WALK_ENTRIES;
+   |                                                                ^^^^^^^^^^^^^^^^^^
+
+note: erroneous constant encountered
+   --> file_system_fixture/src/lib.rs:499:27
+    |
+499 |         debug_assert!(i < RG_MATCHES);
+    |                           ^^^^^^^^^^
+
+For more information about this error, try `rustc --explain E0080`.
+error: could not compile `file_system_fixture` (lib) due to 1 previous error
+
+Caused by:
+  process didn't exit successfully: `/home/calef/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc --crate-name file_system_fixture --edition=2024 file_system_fixture/src/lib.rs --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat,unused-externs-silent --crate-type lib --emit=dep-info,metadata,link -C embed-bitcode=no -C debuginfo=2 --warn=unsafe_op_in_unsafe_fn --warn=unexpected_cfgs '--warn=clippy::undocumented_unsafe_blocks' '--warn=clippy::semicolon_if_nothing_returned' '--warn=clippy::ptr_as_ptr' --warn=missing_docs '--warn=clippy::manual_let_else' '--warn=clippy::doc_markdown' '--warn=clippy::cast_ptr_alignment' --check-cfg 'cfg(kani)' --check-cfg 'cfg(docsrs,test)' --check-cfg 'cfg(feature, values())' -C metadata=9c301d62bf5e2d3d -C extra-filename=-9cc789de75d6a672 --out-dir /home/calef/.cache/tmp/cargo-mutants-file-system-follow-ups-LeIl6a.tmp/target/debug/build/file_system_fixture/9cc789de75d6a672/out -C incremental=/home/calef/.cache/tmp/cargo-mutants-file-system-follow-ups-LeIl6a.tmp/target/debug/incremental --extern file_system_contract=/home/calef/.cache/tmp/cargo-mutants-file-system-follow-ups-LeIl6a.tmp/target/debug/build/file_system_contract/4a227a4c61db8a2c/out/libfile_system_contract-4a227a4c61db8a2c.rmeta --force-warn=unused_crate_dependencies` (exit status: 1)
+warning: build failed, waiting for other jobs to finish...
+note: erroneous constant encountered
+   --> file_system_fixture/src/tests.rs:187:40
+    |
+187 |     let _ = crate::walk::rg_match_path(crate::walk::RG_MATCHES, &mut buffer);
+    |                                        ^^^^^^^^^^^^^^^^^^^^^^^
+
+note: erroneous constant encountered
+   --> file_system_fixture/src/tests.rs:224:16
+    |
+224 |     assert_eq!(RG_MATCHES, 138);
+    |                ^^^^^^^^^^
+
+note: erroneous constant encountered
+   --> file_system_fixture/src/tests.rs:222:16
+    |
+222 |     assert_eq!(WALK_BYTES, 138 * 16 + 4096 + 65_536 + 262_144);
+    |                ^^^^^^^^^^
+
+note: erroneous constant encountered
+   --> file_system_fixture/src/tests.rs:220:16
+    |
+220 |     assert_eq!(WALK_ENTRIES, 153);
+    |                ^^^^^^^^^^^^
+
+note: erroneous constant encountered
+   --> file_system_fixture/src/tests.rs:219:16
+    |
+219 |     assert_eq!(WALK_FILES, 141);
+    |                ^^^^^^^^^^
+
+note: erroneous constant encountered
+   --> file_system_fixture/src/tests.rs:219:5
+    |
+219 |     assert_eq!(WALK_FILES, 141);
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note: erroneous constant encountered
+   --> file_system_fixture/src/tests.rs:220:5
+    |
+220 |     assert_eq!(WALK_ENTRIES, 153);
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note: erroneous constant encountered
+   --> file_system_fixture/src/tests.rs:222:5
+    |
+222 |     assert_eq!(WALK_BYTES, 138 * 16 + 4096 + 65_536 + 262_144);
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note: erroneous constant encountered
+   --> file_system_fixture/src/tests.rs:224:5
+    |
+224 |     assert_eq!(RG_MATCHES, 138);
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note: erroneous constant encountered
+   --> file_system_fixture/src/tests.rs:463:31
+    |
+463 |     assert_eq!(model.0.len(), crate::image::ENTRIES);
+    |                               ^^^^^^^^^^^^^^^^^^^^^
+
+note: erroneous constant encountered
+   --> file_system_fixture/src/tests.rs:463:5
+    |
+463 |     assert_eq!(model.0.len(), crate::image::ENTRIES);
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note: erroneous constant encountered
+   --> file_system_fixture/src/tests.rs:547:23
+    |
+547 |     assert_eq!(bytes, walk::WALK_BYTES);
+    |                       ^^^^^^^^^^^^^^^^
+
+note: erroneous constant encountered
+   --> file_system_fixture/src/tests.rs:546:23
+    |
+546 |     assert_eq!(files, walk::WALK_FILES);
+    |                       ^^^^^^^^^^^^^^^^
+
+note: erroneous constant encountered
+   --> file_system_fixture/src/tests.rs:545:25
+    |
+545 |     assert_eq!(entries, walk::WALK_ENTRIES);
+    |                         ^^^^^^^^^^^^^^^^^^
+
+note: erroneous constant encountered
+   --> file_system_fixture/src/tests.rs:545:5
+    |
+545 |     assert_eq!(entries, walk::WALK_ENTRIES);
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note: erroneous constant encountered
+   --> file_system_fixture/src/tests.rs:546:5
+    |
+546 |     assert_eq!(files, walk::WALK_FILES);
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note: erroneous constant encountered
+   --> file_system_fixture/src/tests.rs:547:5
+    |
+547 |     assert_eq!(bytes, walk::WALK_BYTES);
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error: could not compile `file_system_fixture` (lib test) due to 1 previous error
+
+Caused by:
+  process didn't exit successfully: `/home/calef/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc --crate-name file_system_fixture --edition=2024 file_system_fixture/src/lib.rs --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat,unused-externs-silent --emit=dep-info,link -C embed-bitcode=no -C debuginfo=2 --warn=unsafe_op_in_unsafe_fn --warn=unexpected_cfgs '--warn=clippy::undocumented_unsafe_blocks' '--warn=clippy::semicolon_if_nothing_returned' '--warn=clippy::ptr_as_ptr' --warn=missing_docs '--warn=clippy::manual_let_else' '--warn=clippy::doc_markdown' '--warn=clippy::cast_ptr_alignment' --check-cfg 'cfg(kani)' --test --check-cfg 'cfg(docsrs,test)' --check-cfg 'cfg(feature, values())' -C metadata=3c58a47500fa006a -C extra-filename=-6ad9ae2abd04a2ad --out-dir /home/calef/.cache/tmp/cargo-mutants-file-system-follow-ups-LeIl6a.tmp/target/debug/build/file_system_fixture/6ad9ae2abd04a2ad/out -C incremental=/home/calef/.cache/tmp/cargo-mutants-file-system-follow-ups-LeIl6a.tmp/target/debug/incremental --extern file_system_contract=/home/calef/.cache/tmp/cargo-mutants-file-system-follow-ups-LeIl6a.tmp/target/debug/build/file_system_contract/4a227a4c61db8a2c/out/libfile_system_contract-4a227a4c61db8a2c.rlib --force-warn=unused_crate_dependencies` (exit status: 1)
+
+*** result: Failure(101)

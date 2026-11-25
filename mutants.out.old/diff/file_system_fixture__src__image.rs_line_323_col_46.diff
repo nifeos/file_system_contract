@@ -1,0 +1,21 @@
+--- file_system_fixture/src/image.rs
++++ replace % with / in check_listing
+@@ -315,17 +315,17 @@
+         error,
+     })?;
+     if let Some(fault) = fault {
+         return Err(fault);
+     }
+     let mut slot = 0;
+     for_each(|entry| {
+         if is_child(path, entry.path) {
+-            if seen[slot / 64] & (1 << (slot % 64)) == 0 {
++            if seen[slot / 64] & (1 << (slot / /* ~ changed by cargo-mutants ~ */ 64)) == 0 {
+                 return Err(Mismatch::Missing { entry: entry.index });
+             }
+             slot += 1;
+         }
+         Ok(())
+     })
+ }
+ 

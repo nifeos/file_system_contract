@@ -1,0 +1,53 @@
+--- file_system_fixture/src/image.rs
++++ replace walk_tree -> Result<(), E> with Ok(())
+@@ -151,49 +151,17 @@
+     put(&[globmany], DIRECTORY)?;
+     for name in MANY_NAMES {
+         put(&[globmany, name.as_bytes()], file(MANY_BODY))?;
+     }
+     put(&[globmany, MANY_MISS.as_bytes()], file(MANY_BODY))
+ }
+ 
+ fn walk_tree<E>(put: &mut impl FnMut(&[&[u8]], Kind) -> Result<(), E>) -> Result<(), E> {
+-    use walk::*;
+-    let small = file(SMALL_BODY);
+-    let root = ROOT.as_bytes();
+-    put(&[root], DIRECTORY)?;
+-
+-    // The chain: `chain`, `chain/c`, and so on, with the file `f` at every level.
+-    let mut path: [&[u8]; DEPTH + 3] = [b""; DEPTH + 3];
+-    path[0] = root;
+-    path[1] = CHAIN.as_bytes();
+-    for level in 0..=DEPTH {
+-        let directory = 2 + level;
+-        if level > 0 {
+-            path[directory - 1] = LEVEL.as_bytes();
+-        }
+-        put(&path[..directory], DIRECTORY)?;
+-        path[directory] = LEVEL_FILE.as_bytes();
+-        put(&path[..=directory], small)?;
+-    }
+-
+-    put(&[root, WIDE.as_bytes()], DIRECTORY)?;
+-    for i in 0..WIDE_FILES {
+-        put(&[root, WIDE.as_bytes(), &wide_name(i)], small)?;
+-    }
+-    put(&[root, NARROW.as_bytes()], DIRECTORY)?;
+-    put(&[root, NARROW.as_bytes(), &wide_name(0)], small)?;
+-    put(&[root, BYTE_REGION.as_bytes()], DIRECTORY)?;
+-    for (name, len) in BYTE_REGION_FILES {
+-        put(
+-            &[root, BYTE_REGION.as_bytes(), name.as_bytes()],
+-            Kind::File(Body::Sized(len)),
+-        )?;
+-    }
+-    Ok(())
++    Ok(()) /* ~ changed by cargo-mutants ~ */
+ }
+ 
+ /// Read access to a staged image, which [`verify`] checks against the plan. A path is a list of
+ /// names below the image root, and the empty path is the root.
+ pub trait Reader {
+     /// What a failed list or read returns.
+     type Error;
+ 

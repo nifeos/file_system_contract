@@ -9,3 +9,5 @@
 #   file_system_fixture: caught 183, missed 14, timeout 0, unviable 19.
 # The missed mutants are not listed here because the census did not record which; the first weekly
 # mutation run names each, and each goes below as `<crate>/<file>:<line> # <reason>`.
+
+file_system_fixture/src/image.rs:292 # DIRECTORY_SLOTS / 64 to DIRECTORY_SLOTS * 64 only makes the seen-slot bitmap 64 times longer, 16384 words instead of 256 and never indexed past the first 4; no verdict differs, and the other operator, %, is caught

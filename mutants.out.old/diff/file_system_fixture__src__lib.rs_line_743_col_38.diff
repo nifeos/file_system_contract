@@ -1,0 +1,21 @@
+--- file_system_fixture/src/lib.rs
++++ replace << with >>
+@@ -735,17 +735,17 @@
+     pub const RMDIR_REMOVED_EMPTY: u64 = 1 << 19;
+     /// It opened [`crate::tree::ABSOLUTE_INNER`], which only [`crate::tree::SUB`] holds.
+     pub const ABSOLUTE_REACHED_INNER: u64 = 1 << 20;
+     /// It opened [`crate::tree::ABSOLUTE_SECRET`], which only [`crate::tree::OTHER`] holds.
+     pub const ABSOLUTE_REACHED_SECRET: u64 = 1 << 21;
+     /// `cd /..` was refused and nothing moved.
+     pub const ABSOLUTE_CLAMPED_AT_ROOT: u64 = 1 << 22;
+     /// `touch` on an absent name created it, empty.
+-    pub const TOUCH_CREATED: u64 = 1 << 23;
++    pub const TOUCH_CREATED: u64 = 1 >> /* ~ changed by cargo-mutants ~ */ 23;
+     /// `touch` on [`crate::tree::NAVIGATION_TOUCH`] left [`crate::tree::NAVIGATION_TOUCH_BODY`] in
+     /// it.
+     pub const TOUCH_PRESERVED: u64 = 1 << 24;
+     /// A second bare `touch` read back a strictly later modification time through
+     /// `GET_MODIFICATION_TIME_UNIX_SECONDS`.
+     pub const TOUCH_MODIFICATION_TIME_ADVANCED: u64 = 1 << 25;
+     /// `touch -t` read back exactly [`crate::tree::NAVIGATION_TOUCH_AT_UNIX_SECONDS`].
+     pub const TOUCH_AT_ROUND_TRIPPED: u64 = 1 << 26;

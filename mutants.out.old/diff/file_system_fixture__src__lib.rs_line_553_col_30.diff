@@ -1,0 +1,21 @@
+--- file_system_fixture/src/lib.rs
++++ replace << with >>
+@@ -545,17 +545,17 @@
+     /// [`file_system_contract::directory::rights::CREATE`].
+     pub const CREATED: u64 = 1 << 6;
+     /// It made a directory inside the grant and got a capability to it. Expected only with
+     /// [`file_system_contract::directory::rights::CREATE`] and
+     /// [`file_system_contract::directory::rights::DESCEND`] together.
+     pub const MADE_A_DIRECTORY: u64 = 1 << 12;
+     /// Its write to a file inside the grant was accepted and read back. Expected only with
+     /// [`file_system_contract::directory::rights::WRITE`].
+-    pub const WROTE: u64 = 1 << 7;
++    pub const WROTE: u64 = 1 >> /* ~ changed by cargo-mutants ~ */ 7;
+     /// It renamed a name inside its grant. Expected only with
+     /// [`file_system_contract::directory::rights::REMOVE`] and
+     /// [`file_system_contract::directory::rights::CREATE`] together.
+     pub const RENAMED: u64 = 1 << 8;
+     /// A listing it was allowed to make named something outside the granted directory. Never
+     /// allowed.
+     pub const ENUMERATED_A_STRANGER: u64 = 1 << 9;
+     /// It reached something with a handle it was never given. Never allowed.

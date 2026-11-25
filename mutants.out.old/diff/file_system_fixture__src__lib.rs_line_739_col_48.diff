@@ -1,0 +1,21 @@
+--- file_system_fixture/src/lib.rs
++++ replace << with >>
+@@ -731,17 +731,17 @@
+     pub const NAVIGATION_FAILED: u64 = 1 << 17;
+     /// `RMDIR` of a directory with a name in it was refused with `ENOTEMPTY`.
+     pub const RMDIR_REFUSED_NON_EMPTY: u64 = 1 << 18;
+     /// `RMDIR` removed that directory once it was empty.
+     pub const RMDIR_REMOVED_EMPTY: u64 = 1 << 19;
+     /// It opened [`crate::tree::ABSOLUTE_INNER`], which only [`crate::tree::SUB`] holds.
+     pub const ABSOLUTE_REACHED_INNER: u64 = 1 << 20;
+     /// It opened [`crate::tree::ABSOLUTE_SECRET`], which only [`crate::tree::OTHER`] holds.
+-    pub const ABSOLUTE_REACHED_SECRET: u64 = 1 << 21;
++    pub const ABSOLUTE_REACHED_SECRET: u64 = 1 >> /* ~ changed by cargo-mutants ~ */ 21;
+     /// `cd /..` was refused and nothing moved.
+     pub const ABSOLUTE_CLAMPED_AT_ROOT: u64 = 1 << 22;
+     /// `touch` on an absent name created it, empty.
+     pub const TOUCH_CREATED: u64 = 1 << 23;
+     /// `touch` on [`crate::tree::NAVIGATION_TOUCH`] left [`crate::tree::NAVIGATION_TOUCH_BODY`] in
+     /// it.
+     pub const TOUCH_PRESERVED: u64 = 1 << 24;
+     /// A second bare `touch` read back a strictly later modification time through

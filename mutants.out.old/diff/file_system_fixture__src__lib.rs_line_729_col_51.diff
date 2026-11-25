@@ -1,0 +1,21 @@
+--- file_system_fixture/src/lib.rs
++++ replace << with >>
+@@ -721,17 +721,17 @@
+     pub const MADE_DIRECTORY: u64 = 1 << 12;
+     /// `rm` removed the name it had made.
+     pub const UNLINKED: u64 = 1 << 13;
+     /// After that `rm`, a read through the handle it still held returned the bytes.
+     pub const HOLDER_KEPT_READING: u64 = 1 << 14;
+     /// After that `rm`, the removed name no longer opens.
+     pub const NAME_GONE_AFTER_UNLINK: u64 = 1 << 15;
+     /// `UNLINK` of a directory was refused.
+-    pub const UNLINK_REFUSED_A_DIRECTORY: u64 = 1 << 16;
++    pub const UNLINK_REFUSED_A_DIRECTORY: u64 = 1 >> /* ~ changed by cargo-mutants ~ */ 16;
+     /// Something that should have worked did not, so the refusals prove nothing. A control bit.
+     pub const NAVIGATION_FAILED: u64 = 1 << 17;
+     /// `RMDIR` of a directory with a name in it was refused with `ENOTEMPTY`.
+     pub const RMDIR_REFUSED_NON_EMPTY: u64 = 1 << 18;
+     /// `RMDIR` removed that directory once it was empty.
+     pub const RMDIR_REMOVED_EMPTY: u64 = 1 << 19;
+     /// It opened [`crate::tree::ABSOLUTE_INNER`], which only [`crate::tree::SUB`] holds.
+     pub const ABSOLUTE_REACHED_INNER: u64 = 1 << 20;

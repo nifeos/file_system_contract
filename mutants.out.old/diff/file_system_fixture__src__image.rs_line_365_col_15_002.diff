@@ -1,0 +1,20 @@
+--- file_system_fixture/src/image.rs
++++ replace < with <= in check_file
+@@ -357,16 +357,16 @@
+                 return Err(Mismatch::Differs {
+                     entry: index,
+                     offset: at,
+                 });
+             }
+         }
+         offset += n;
+     }
+-    if offset < body.len() {
++    if offset <= /* ~ changed by cargo-mutants ~ */ body.len() {
+         return Err(Mismatch::Short {
+             entry: index,
+             length_bytes: offset,
+         });
+     }
+     Ok(())
+ }

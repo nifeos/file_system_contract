@@ -1,0 +1,21 @@
+--- file_system_fixture/src/image.rs
++++ replace += with *= in child
+@@ -272,17 +272,17 @@
+ /// The slot (position among its siblings) and index of the entry named `name` in `parent`.
+ fn child(parent: &[&[u8]], name: &[u8]) -> Option<(usize, usize)> {
+     let mut slot = 0;
+     for_each(|entry| {
+         if is_child(parent, entry.path) {
+             if entry.path[parent.len()] == name {
+                 return Err((slot, entry.index));
+             }
+-            slot += 1;
++            slot *= /* ~ changed by cargo-mutants ~ */ 1;
+         }
+         Ok(())
+     })
+     .err()
+ }
+ 
+ fn check_listing<R: Reader>(
+     reader: &mut R,

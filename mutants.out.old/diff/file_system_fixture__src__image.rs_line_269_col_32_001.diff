@@ -1,0 +1,21 @@
+--- file_system_fixture/src/image.rs
++++ replace + with * in is_child
+@@ -261,17 +261,17 @@
+     check_listing(reader, &[], None)?;
+     for_each(|entry| match entry.kind {
+         Kind::Directory => check_listing(reader, entry.path, Some(entry.index)),
+         Kind::File(body) => check_file(reader, entry, body),
+     })
+ }
+ 
+ fn is_child(parent: &[&[u8]], path: &[&[u8]]) -> bool {
+-    path.len() == parent.len() + 1 && path[..parent.len()] == *parent
++    path.len() == parent.len() * /* ~ changed by cargo-mutants ~ */ 1 && path[..parent.len()] == *parent
+ }
+ 
+ /// The slot (position among its siblings) and index of the entry named `name` in `parent`.
+ fn child(parent: &[&[u8]], name: &[u8]) -> Option<(usize, usize)> {
+     let mut slot = 0;
+     for_each(|entry| {
+         if is_child(parent, entry.path) {
+             if entry.path[parent.len()] == name {

@@ -1,0 +1,1 @@
+file_system_fixture/src/image.rs:363:16: replace += with *= in check_file

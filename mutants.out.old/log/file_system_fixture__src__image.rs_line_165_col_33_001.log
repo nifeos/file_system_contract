@@ -1,0 +1,71 @@
+
+*** file_system_fixture/src/image.rs:165:33: replace + with * in walk_tree
+
+*** mutation diff:
+--- file_system_fixture/src/image.rs
++++ replace + with * in walk_tree
+@@ -157,17 +157,17 @@
+ 
+ fn walk_tree<E>(put: &mut impl FnMut(&[&[u8]], Kind) -> Result<(), E>) -> Result<(), E> {
+     use walk::*;
+     let small = file(SMALL_BODY);
+     let root = ROOT.as_bytes();
+     put(&[root], DIRECTORY)?;
+ 
+     // The chain: `chain`, `chain/c`, and so on, with the file `f` at every level.
+-    let mut path: [&[u8]; DEPTH + 3] = [b""; DEPTH + 3];
++    let mut path: [&[u8]; DEPTH * /* ~ changed by cargo-mutants ~ */ 3] = [b""; DEPTH + 3];
+     path[0] = root;
+     path[1] = CHAIN.as_bytes();
+     for level in 0..=DEPTH {
+         let directory = 2 + level;
+         if level > 0 {
+             path[directory - 1] = LEVEL.as_bytes();
+         }
+         put(&path[..directory], DIRECTORY)?;
+
+
+*** /home/calef/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/cargo test --no-run --verbose --package=file_system_fixture@0.1.0
+warning: `package.homepage` is redundant with `package.repository`
+  --> file_system_contract/Cargo.toml:11:12
+   |
+ 9 | repository = "https://github.com/partsfoundry/file_system_contract"
+   |              ------------------------------------------------------
+10 | documentation = "https://github.com/partsfoundry/file_system_contract"
+11 | homepage = "https://github.com/partsfoundry/file_system_contract"
+   |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: `cargo::redundant_homepage` is set to `warn` by default
+help: consider removing `package.homepage`
+warning: `file_system_contract` (manifest) generated 1 warning
+       Fresh file_system_contract v0.1.0 (/home/calef/.cache/tmp/cargo-mutants-file-system-follow-ups-3kgWnG.tmp/file_system_contract)
+       Dirty file_system_fixture v0.1.0 (/home/calef/.cache/tmp/cargo-mutants-file-system-follow-ups-3kgWnG.tmp/file_system_fixture): the file `file_system_fixture/src/image.rs` has changed (1795573206.678954482s, 633005714ns after last build at 1795573206.045948768s)
+   Compiling file_system_fixture v0.1.0 (/home/calef/.cache/tmp/cargo-mutants-file-system-follow-ups-3kgWnG.tmp/file_system_fixture)
+     Running `/home/calef/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc --crate-name file_system_fixture --edition=2024 file_system_fixture/src/lib.rs --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat,unused-externs-silent --emit=dep-info,link -C embed-bitcode=no -C debuginfo=2 --warn=unsafe_op_in_unsafe_fn --warn=unexpected_cfgs '--warn=clippy::undocumented_unsafe_blocks' '--warn=clippy::semicolon_if_nothing_returned' '--warn=clippy::ptr_as_ptr' --warn=missing_docs '--warn=clippy::manual_let_else' '--warn=clippy::doc_markdown' '--warn=clippy::cast_ptr_alignment' --check-cfg 'cfg(kani)' --test --check-cfg 'cfg(docsrs,test)' --check-cfg 'cfg(feature, values())' -C metadata=3c58a47500fa006a -C extra-filename=-6ad9ae2abd04a2ad --out-dir /home/calef/.cache/tmp/cargo-mutants-file-system-follow-ups-3kgWnG.tmp/target/debug/build/file_system_fixture/6ad9ae2abd04a2ad/out -C incremental=/home/calef/.cache/tmp/cargo-mutants-file-system-follow-ups-3kgWnG.tmp/target/debug/incremental --extern file_system_contract=/home/calef/.cache/tmp/cargo-mutants-file-system-follow-ups-3kgWnG.tmp/target/debug/build/file_system_contract/4a227a4c61db8a2c/out/libfile_system_contract-4a227a4c61db8a2c.rlib --force-warn=unused_crate_dependencies`
+     Running `/home/calef/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc --crate-name file_system_fixture --edition=2024 file_system_fixture/src/lib.rs --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat,unused-externs-silent --crate-type lib --emit=dep-info,metadata,link -C embed-bitcode=no -C debuginfo=2 --warn=unsafe_op_in_unsafe_fn --warn=unexpected_cfgs '--warn=clippy::undocumented_unsafe_blocks' '--warn=clippy::semicolon_if_nothing_returned' '--warn=clippy::ptr_as_ptr' --warn=missing_docs '--warn=clippy::manual_let_else' '--warn=clippy::doc_markdown' '--warn=clippy::cast_ptr_alignment' --check-cfg 'cfg(kani)' --check-cfg 'cfg(docsrs,test)' --check-cfg 'cfg(feature, values())' -C metadata=9c301d62bf5e2d3d -C extra-filename=-9cc789de75d6a672 --out-dir /home/calef/.cache/tmp/cargo-mutants-file-system-follow-ups-3kgWnG.tmp/target/debug/build/file_system_fixture/9cc789de75d6a672/out -C incremental=/home/calef/.cache/tmp/cargo-mutants-file-system-follow-ups-3kgWnG.tmp/target/debug/incremental --extern file_system_contract=/home/calef/.cache/tmp/cargo-mutants-file-system-follow-ups-3kgWnG.tmp/target/debug/build/file_system_contract/4a227a4c61db8a2c/out/libfile_system_contract-4a227a4c61db8a2c.rmeta --force-warn=unused_crate_dependencies`
+error[E0308]: mismatched types
+   --> file_system_fixture/src/image.rs:165:75
+    |
+165 |     let mut path: [&[u8]; DEPTH * /* ~ changed by cargo-mutants ~ */ 3] = [b""; DEPTH + 3];
+    |                   -----------------------------------------------------   ^^^^^^^^^^^^^^^^ expected an array with a size of 24, found one with a size of 11
+    |                   |
+    |                   expected due to this
+    |
+help: consider specifying the actual array length
+    |
+165 -     let mut path: [&[u8]; DEPTH * /* ~ changed by cargo-mutants ~ */ 3] = [b""; DEPTH + 3];
+165 +     let mut path: [&[u8]; 11] = [b""; DEPTH + 3];
+    |
+
+For more information about this error, try `rustc --explain E0308`.
+error: could not compile `file_system_fixture` (lib) due to 1 previous error
+
+Caused by:
+  process didn't exit successfully: `/home/calef/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc --crate-name file_system_fixture --edition=2024 file_system_fixture/src/lib.rs --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat,unused-externs-silent --crate-type lib --emit=dep-info,metadata,link -C embed-bitcode=no -C debuginfo=2 --warn=unsafe_op_in_unsafe_fn --warn=unexpected_cfgs '--warn=clippy::undocumented_unsafe_blocks' '--warn=clippy::semicolon_if_nothing_returned' '--warn=clippy::ptr_as_ptr' --warn=missing_docs '--warn=clippy::manual_let_else' '--warn=clippy::doc_markdown' '--warn=clippy::cast_ptr_alignment' --check-cfg 'cfg(kani)' --check-cfg 'cfg(docsrs,test)' --check-cfg 'cfg(feature, values())' -C metadata=9c301d62bf5e2d3d -C extra-filename=-9cc789de75d6a672 --out-dir /home/calef/.cache/tmp/cargo-mutants-file-system-follow-ups-3kgWnG.tmp/target/debug/build/file_system_fixture/9cc789de75d6a672/out -C incremental=/home/calef/.cache/tmp/cargo-mutants-file-system-follow-ups-3kgWnG.tmp/target/debug/incremental --extern file_system_contract=/home/calef/.cache/tmp/cargo-mutants-file-system-follow-ups-3kgWnG.tmp/target/debug/build/file_system_contract/4a227a4c61db8a2c/out/libfile_system_contract-4a227a4c61db8a2c.rmeta --force-warn=unused_crate_dependencies` (exit status: 1)
+warning: build failed, waiting for other jobs to finish...
+error: could not compile `file_system_fixture` (lib test) due to 1 previous error
+
+Caused by:
+  process didn't exit successfully: `/home/calef/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc --crate-name file_system_fixture --edition=2024 file_system_fixture/src/lib.rs --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat,unused-externs-silent --emit=dep-info,link -C embed-bitcode=no -C debuginfo=2 --warn=unsafe_op_in_unsafe_fn --warn=unexpected_cfgs '--warn=clippy::undocumented_unsafe_blocks' '--warn=clippy::semicolon_if_nothing_returned' '--warn=clippy::ptr_as_ptr' --warn=missing_docs '--warn=clippy::manual_let_else' '--warn=clippy::doc_markdown' '--warn=clippy::cast_ptr_alignment' --check-cfg 'cfg(kani)' --test --check-cfg 'cfg(docsrs,test)' --check-cfg 'cfg(feature, values())' -C metadata=3c58a47500fa006a -C extra-filename=-6ad9ae2abd04a2ad --out-dir /home/calef/.cache/tmp/cargo-mutants-file-system-follow-ups-3kgWnG.tmp/target/debug/build/file_system_fixture/6ad9ae2abd04a2ad/out -C incremental=/home/calef/.cache/tmp/cargo-mutants-file-system-follow-ups-3kgWnG.tmp/target/debug/incremental --extern file_system_contract=/home/calef/.cache/tmp/cargo-mutants-file-system-follow-ups-3kgWnG.tmp/target/debug/build/file_system_contract/4a227a4c61db8a2c/out/libfile_system_contract-4a227a4c61db8a2c.rlib --force-warn=unused_crate_dependencies` (exit status: 1)
+
+*** result: Failure(101)

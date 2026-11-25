@@ -1,0 +1,21 @@
+--- file_system_fixture/src/image.rs
++++ replace / with * in check_listing
+@@ -296,17 +296,17 @@
+             return;
+         }
+         match child(path, name) {
+             Some((slot, entry)) => {
+                 let bit = 1 << (slot % 64);
+                 if seen[slot / 64] & bit != 0 {
+                     fault = Some(Mismatch::Repeated { entry });
+                 }
+-                seen[slot / 64] |= bit;
++                seen[slot * /* ~ changed by cargo-mutants ~ */ 64] |= bit;
+             }
+             None => {
+                 if let Some(directory) = directory {
+                     fault = Some(Mismatch::Unexpected { directory });
+                 }
+             }
+         }
+     });

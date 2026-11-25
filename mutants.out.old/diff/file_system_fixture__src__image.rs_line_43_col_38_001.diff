@@ -1,0 +1,21 @@
+--- file_system_fixture/src/image.rs
++++ replace + with * in Body::fill
+@@ -35,17 +35,17 @@
+             Body::Sized(_) => walk::sized_byte(i),
+         }
+     }
+ 
+     /// Copies the bytes from `offset` on into `buf` and returns how many it copied, 0 at the end.
+     pub fn fill(&self, offset: usize, buf: &mut [u8]) -> usize {
+         let n = buf.len().min(self.len().saturating_sub(offset));
+         for (k, slot) in buf[..n].iter_mut().enumerate() {
+-            *slot = self.byte(offset + k);
++            *slot = self.byte(offset * /* ~ changed by cargo-mutants ~ */ k);
+         }
+         n
+     }
+ }
+ 
+ /// Whether an entry is a directory or a file, and what the file holds.
+ #[derive(Clone, Copy, Debug, PartialEq, Eq)]
+ pub enum Kind {

@@ -1,0 +1,119 @@
+
+*** file_system_fixture/src/lib.rs:537:32: replace << with >>
+
+*** mutation diff:
+--- file_system_fixture/src/lib.rs
++++ replace << with >>
+@@ -529,17 +529,17 @@
+ pub mod directory_escape {
+     /// It opened a file only the granted directory's parent holds. Never allowed.
+     pub const REACHED_PARENT: u64 = 1;
+     /// It reached anything in the granted directory's sibling. Never allowed.
+     pub const REACHED_SIBLING: u64 = 1 << 1;
+     /// `..` resolved to something. Never allowed.
+     pub const WALKED_UP: u64 = 1 << 2;
+     /// It asked for a right its capability did not carry, and got it. Never allowed.
+-    pub const WIDENED: u64 = 1 << 3;
++    pub const WIDENED: u64 = 1 >> /* ~ changed by cargo-mutants ~ */ 3;
+     /// It enumerated the granted directory. Expected only with
+     /// [`file_system_contract::directory::rights::ENUMERATE`].
+     pub const ENUMERATED: u64 = 1 << 4;
+     /// It descended one level inside the grant. Expected only with
+     /// [`file_system_contract::directory::rights::DESCEND`].
+     pub const DESCENDED: u64 = 1 << 5;
+     /// It created a name inside the grant. Expected only with
+     /// [`file_system_contract::directory::rights::CREATE`].
+
+
+*** /home/calef/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/cargo test --no-run --verbose --package=file_system_fixture@0.1.0
+warning: `package.homepage` is redundant with `package.repository`
+  --> file_system_contract/Cargo.toml:11:12
+   |
+ 9 | repository = "https://github.com/partsfoundry/file_system_contract"
+   |              ------------------------------------------------------
+10 | documentation = "https://github.com/partsfoundry/file_system_contract"
+11 | homepage = "https://github.com/partsfoundry/file_system_contract"
+   |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: `cargo::redundant_homepage` is set to `warn` by default
+help: consider removing `package.homepage`
+warning: `file_system_contract` (manifest) generated 1 warning
+       Fresh file_system_contract v0.1.0 (/home/calef/.cache/tmp/cargo-mutants-file-system-follow-ups-3kgWnG.tmp/file_system_contract)
+       Dirty file_system_fixture v0.1.0 (/home/calef/.cache/tmp/cargo-mutants-file-system-follow-ups-3kgWnG.tmp/file_system_fixture): the file `file_system_fixture/src/lib.rs` has changed (1795573167.261598724s, 1s after last build at 1795573166.694593607s)
+   Compiling file_system_fixture v0.1.0 (/home/calef/.cache/tmp/cargo-mutants-file-system-follow-ups-3kgWnG.tmp/file_system_fixture)
+     Running `/home/calef/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc --crate-name file_system_fixture --edition=2024 file_system_fixture/src/lib.rs --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat,unused-externs-silent --emit=dep-info,link -C embed-bitcode=no -C debuginfo=2 --warn=unsafe_op_in_unsafe_fn --warn=unexpected_cfgs '--warn=clippy::undocumented_unsafe_blocks' '--warn=clippy::semicolon_if_nothing_returned' '--warn=clippy::ptr_as_ptr' --warn=missing_docs '--warn=clippy::manual_let_else' '--warn=clippy::doc_markdown' '--warn=clippy::cast_ptr_alignment' --check-cfg 'cfg(kani)' --test --check-cfg 'cfg(docsrs,test)' --check-cfg 'cfg(feature, values())' -C metadata=3c58a47500fa006a -C extra-filename=-6ad9ae2abd04a2ad --out-dir /home/calef/.cache/tmp/cargo-mutants-file-system-follow-ups-3kgWnG.tmp/target/debug/build/file_system_fixture/6ad9ae2abd04a2ad/out -C incremental=/home/calef/.cache/tmp/cargo-mutants-file-system-follow-ups-3kgWnG.tmp/target/debug/incremental --extern file_system_contract=/home/calef/.cache/tmp/cargo-mutants-file-system-follow-ups-3kgWnG.tmp/target/debug/build/file_system_contract/4a227a4c61db8a2c/out/libfile_system_contract-4a227a4c61db8a2c.rlib --force-warn=unused_crate_dependencies`
+     Running `/home/calef/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc --crate-name file_system_fixture --edition=2024 file_system_fixture/src/lib.rs --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat,unused-externs-silent --crate-type lib --emit=dep-info,metadata,link -C embed-bitcode=no -C debuginfo=2 --warn=unsafe_op_in_unsafe_fn --warn=unexpected_cfgs '--warn=clippy::undocumented_unsafe_blocks' '--warn=clippy::semicolon_if_nothing_returned' '--warn=clippy::ptr_as_ptr' --warn=missing_docs '--warn=clippy::manual_let_else' '--warn=clippy::doc_markdown' '--warn=clippy::cast_ptr_alignment' --check-cfg 'cfg(kani)' --check-cfg 'cfg(docsrs,test)' --check-cfg 'cfg(feature, values())' -C metadata=9c301d62bf5e2d3d -C extra-filename=-9cc789de75d6a672 --out-dir /home/calef/.cache/tmp/cargo-mutants-file-system-follow-ups-3kgWnG.tmp/target/debug/build/file_system_fixture/9cc789de75d6a672/out -C incremental=/home/calef/.cache/tmp/cargo-mutants-file-system-follow-ups-3kgWnG.tmp/target/debug/incremental --extern file_system_contract=/home/calef/.cache/tmp/cargo-mutants-file-system-follow-ups-3kgWnG.tmp/target/debug/build/file_system_contract/4a227a4c61db8a2c/out/libfile_system_contract-4a227a4c61db8a2c.rmeta --force-warn=unused_crate_dependencies`
+     Running `/home/calef/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc --crate-name host_directory --edition=2024 file_system_fixture/tests/host_directory.rs --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat,unused-externs-silent --emit=dep-info,link -C embed-bitcode=no -C debuginfo=2 --warn=unsafe_op_in_unsafe_fn --warn=unexpected_cfgs '--warn=clippy::undocumented_unsafe_blocks' '--warn=clippy::semicolon_if_nothing_returned' '--warn=clippy::ptr_as_ptr' --warn=missing_docs '--warn=clippy::manual_let_else' '--warn=clippy::doc_markdown' '--warn=clippy::cast_ptr_alignment' --check-cfg 'cfg(kani)' --test --check-cfg 'cfg(docsrs,test)' --check-cfg 'cfg(feature, values())' -C metadata=9ec9ab95e418530b -C extra-filename=-7495776e1709f3ba --out-dir /home/calef/.cache/tmp/cargo-mutants-file-system-follow-ups-3kgWnG.tmp/target/debug/build/file_system_fixture/7495776e1709f3ba/out -C incremental=/home/calef/.cache/tmp/cargo-mutants-file-system-follow-ups-3kgWnG.tmp/target/debug/incremental -L dependency=/home/calef/.cache/tmp/cargo-mutants-file-system-follow-ups-3kgWnG.tmp/target/debug/build/file_system_contract/4a227a4c61db8a2c/out --extern file_system_contract=/home/calef/.cache/tmp/cargo-mutants-file-system-follow-ups-3kgWnG.tmp/target/debug/build/file_system_contract/4a227a4c61db8a2c/out/libfile_system_contract-4a227a4c61db8a2c.rlib --extern file_system_fixture=/home/calef/.cache/tmp/cargo-mutants-file-system-follow-ups-3kgWnG.tmp/target/debug/build/file_system_fixture/9cc789de75d6a672/out/libfile_system_fixture-9cc789de75d6a672.rlib --force-warn=unused_crate_dependencies`
+     Running `/home/calef/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc --crate-name host_directory --edition=2024 file_system_fixture/examples/host_directory.rs --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat,unused-externs-silent --crate-type bin --emit=dep-info,link -C embed-bitcode=no -C debuginfo=2 --warn=unsafe_op_in_unsafe_fn --warn=unexpected_cfgs '--warn=clippy::undocumented_unsafe_blocks' '--warn=clippy::semicolon_if_nothing_returned' '--warn=clippy::ptr_as_ptr' --warn=missing_docs '--warn=clippy::manual_let_else' '--warn=clippy::doc_markdown' '--warn=clippy::cast_ptr_alignment' --check-cfg 'cfg(kani)' --check-cfg 'cfg(docsrs,test)' --check-cfg 'cfg(feature, values())' -C metadata=ea40595ce1c27a7c --out-dir /home/calef/.cache/tmp/cargo-mutants-file-system-follow-ups-3kgWnG.tmp/target/debug/build/file_system_fixture/fb980dcf76bd2c2e/out -C incremental=/home/calef/.cache/tmp/cargo-mutants-file-system-follow-ups-3kgWnG.tmp/target/debug/incremental -L dependency=/home/calef/.cache/tmp/cargo-mutants-file-system-follow-ups-3kgWnG.tmp/target/debug/build/file_system_contract/4a227a4c61db8a2c/out --extern file_system_contract=/home/calef/.cache/tmp/cargo-mutants-file-system-follow-ups-3kgWnG.tmp/target/debug/build/file_system_contract/4a227a4c61db8a2c/out/libfile_system_contract-4a227a4c61db8a2c.rlib --extern file_system_fixture=/home/calef/.cache/tmp/cargo-mutants-file-system-follow-ups-3kgWnG.tmp/target/debug/build/file_system_fixture/9cc789de75d6a672/out/libfile_system_fixture-9cc789de75d6a672.rlib --force-warn=unused_crate_dependencies`
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.57s
+  Executable `/home/calef/.cache/tmp/cargo-mutants-file-system-follow-ups-3kgWnG.tmp/target/debug/build/file_system_fixture/6ad9ae2abd04a2ad/out/file_system_fixture-6ad9ae2abd04a2ad`
+  Executable `/home/calef/.cache/tmp/cargo-mutants-file-system-follow-ups-3kgWnG.tmp/target/debug/build/file_system_fixture/7495776e1709f3ba/out/host_directory-7495776e1709f3ba`
+
+*** result: Success
+
+*** /home/calef/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/cargo test --verbose --package=file_system_fixture@0.1.0
+warning: `package.homepage` is redundant with `package.repository`
+  --> file_system_contract/Cargo.toml:11:12
+   |
+ 9 | repository = "https://github.com/partsfoundry/file_system_contract"
+   |              ------------------------------------------------------
+10 | documentation = "https://github.com/partsfoundry/file_system_contract"
+11 | homepage = "https://github.com/partsfoundry/file_system_contract"
+   |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: `cargo::redundant_homepage` is set to `warn` by default
+help: consider removing `package.homepage`
+warning: `file_system_contract` (manifest) generated 1 warning
+       Fresh file_system_contract v0.1.0 (/home/calef/.cache/tmp/cargo-mutants-file-system-follow-ups-3kgWnG.tmp/file_system_contract)
+       Fresh file_system_fixture v0.1.0 (/home/calef/.cache/tmp/cargo-mutants-file-system-follow-ups-3kgWnG.tmp/file_system_fixture)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.02s
+     Running `/home/calef/.cache/tmp/cargo-mutants-file-system-follow-ups-3kgWnG.tmp/target/debug/build/file_system_fixture/6ad9ae2abd04a2ad/out/file_system_fixture-6ad9ae2abd04a2ad`
+
+running 22 tests
+test tests::a_body_knows_whether_it_is_empty_and_which_byte_is_where ... ok
+test tests::a_text_frame_and_a_verdict_are_told_apart_by_the_first_word ... ok
+test tests::a_sized_file_cycles_the_alphabet_and_breaks_every_sixty_four ... ok
+test tests::every_throughput_phase_tag_has_its_own_name ... ok
+test tests::a_wide_name_past_the_last_file_is_refused - should panic ... ok
+test tests::a_match_path_past_the_last_match_is_refused - should panic ... ok
+test tests::every_witness_bit_is_a_distinct_single_bit ... FAILED
+test tests::the_absolute_probe_names_are_the_relative_ones_rooted ... ok
+test tests::the_attribute_witness_expectation_matches_its_bits ... ok
+test tests::the_crash_payloads_replace_each_other_completely ... ok
+test tests::every_witness_all_lists_each_bit_its_module_declares ... FAILED
+test tests::the_plan_holds_the_chain_by_name ... ok
+test tests::the_plan_holds_the_root_entries_and_every_name_fits ... ok
+test tests::the_plan_walk_tree_matches_the_walk_totals ... ok
+test tests::the_rg_match_paths_meet_at_the_region_boundaries ... ok
+test tests::the_subtree_fixture_is_grantable_and_unambiguous ... ok
+test tests::the_walk_totals_are_what_the_shape_adds_up_to ... ok
+test tests::the_wide_directory_names_are_n_and_three_digits ... ok
+test tests::the_staged_plan_verifies ... ok
+test tests::the_root_tolerates_strangers_and_subdirectories_do_not ... ok
+test tests::verifying_advances_through_each_file ... ok
+test tests::a_damaged_file_names_itself ... ok
+
+failures:
+
+---- tests::every_witness_bit_is_a_distinct_single_bit stdout ----
+
+thread 'tests::every_witness_bit_is_a_distinct_single_bit' (185488) panicked at file_system_fixture/src/tests.rs:75:9:
+bit 3 is 0x0, not a single bit
+
+---- tests::every_witness_all_lists_each_bit_its_module_declares stdout ----
+
+thread 'tests::every_witness_all_lists_each_bit_its_module_declares' (185487) panicked at file_system_fixture/src/tests.rs:138:9:
+assertion `left == right` failed: directory_escape::ALL does not list exactly its declared bits
+  left: ["REACHED_PARENT", "REACHED_SIBLING", "WALKED_UP", "WIDENED", "ENUMERATED", "DESCENDED", "CREATED", "MADE_A_DIRECTORY", "WROTE", "RENAMED", "ENUMERATED_A_STRANGER", "FORGED_HANDLE", "OPENED_ITS_OWN", "GRANTED_ACCESS_FAILED", "READ_ATTRIBUTES", "SET_AN_ATTRIBUTE", "REACHED_AN_UNMATCHED_NAME"]
+ right: ["REACHED_PARENT", "REACHED_SIBLING", "WALKED_UP", "ENUMERATED", "DESCENDED", "CREATED", "MADE_A_DIRECTORY", "WROTE", "RENAMED", "ENUMERATED_A_STRANGER", "FORGED_HANDLE", "OPENED_ITS_OWN", "GRANTED_ACCESS_FAILED", "READ_ATTRIBUTES", "SET_AN_ATTRIBUTE", "REACHED_AN_UNMATCHED_NAME"]
+
+
+failures:
+    tests::every_witness_all_lists_each_bit_its_module_declares
+    tests::every_witness_bit_is_a_distinct_single_bit
+
+test result: FAILED. 20 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
+
+error: test failed, to rerun pass `-p file_system_fixture --lib`
+
+*** result: Failure(101)

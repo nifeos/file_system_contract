@@ -297,8 +297,10 @@ pub mod store {
     /// existing attribute is replaced in place, so [`super::super::file_system::LISTXATTR`]'s order does not
     /// shuffle; a new one is appended.
     ///
-    /// `out` must hold `blob.len() + record_len(name.len(), value.len())`, which is always enough;
-    /// a shorter one is [`ENOSPC`]. Errors are the engine's errnos, as below the serve loop.
+    /// `out` must hold `blob.len() + record_len(name.len(), value.len())`, which is enough for any
+    /// blob this function wrote; a shorter one is [`ENOSPC`]. A damaged blob that holds `name`
+    /// twice has both copies replaced, so a longer value can need more room than that and is
+    /// [`ENOSPC`] too. Errors are the engine's errnos, as below the serve loop.
     pub fn set(
         blob: &[u8],
         name: &[u8],

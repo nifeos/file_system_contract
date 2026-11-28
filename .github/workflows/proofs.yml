@@ -9,10 +9,10 @@ permissions:
   contents: read
 jobs:
   proofs-file_system_contract:
-    uses: partsfoundry/crate-workflows/.github/workflows/proofs.yml@11d6d6bbf760462fa1e45275d34b55b88dcde44a
+    uses: partsfoundry/crate-workflows/.github/workflows/proofs.yml@eef0a564a45656471bedcb93e4789f507387bc89
     with:
       manifest-path: file_system_contract/Cargo.toml
   proofs-file_system_fixture:
-    uses: partsfoundry/crate-workflows/.github/workflows/proofs.yml@11d6d6bbf760462fa1e45275d34b55b88dcde44a
+    uses: partsfoundry/crate-workflows/.github/workflows/proofs.yml@eef0a564a45656471bedcb93e4789f507387bc89
     with:
       manifest-path: file_system_fixture/Cargo.toml
